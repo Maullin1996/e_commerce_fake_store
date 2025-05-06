@@ -62,6 +62,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     final List<Product> products = ref.watch(productsByCategory);
     final authenticationState = ref.watch(authenticationProvider);
     final userProvider = ref.watch(userInfoProvider).user;
+
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: HomeTamplate(

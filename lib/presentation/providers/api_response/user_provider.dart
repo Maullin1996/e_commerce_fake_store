@@ -48,7 +48,6 @@ class UserNotifier extends StateNotifier<UserApiResponse> {
             errorMessage: null,
             user: UsersMapper.userFakeStoreToUser(loggedInUser),
           );
-          ref.read(cartProvider.notifier).fetchAllCarts();
         }
 
         return state;

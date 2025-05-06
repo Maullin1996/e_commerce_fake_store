@@ -14,6 +14,7 @@ class CartScreen extends ConsumerWidget {
     final List<Product> cartList = ref.watch(cartListProvider);
     final String token = ref.watch(authenticationProvider).token;
     final user = ref.watch(userInfoProvider).user;
+
     return CartTemplate(
       onDialogButtonPressed: () {
         if (token.isEmpty) {
@@ -21,7 +22,6 @@ class CartScreen extends ConsumerWidget {
           context.push('/login');
         } else {
           ref.read(cartListProvider.notifier).emptyCart();
-          context.push('/home');
         }
       },
       logOutonPressed: () {

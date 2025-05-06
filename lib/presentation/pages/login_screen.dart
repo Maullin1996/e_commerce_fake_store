@@ -31,13 +31,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       previous,
       current,
     ) {
-      if (current.errorMessage != null &&
-          previous?.errorMessage != current.errorMessage) {
+      if (current.errorMessage.isNotEmpty) {
         CustomFloatingNotifications(
           errorMessage: current.errorMessage,
         ).customNotification(TypeVerification.errorMessage);
       }
-      if (current.token.isNotEmpty) {
+      if (current.token.isNotEmpty && !current.isLoading) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             context.pop();
