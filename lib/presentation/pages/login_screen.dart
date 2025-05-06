@@ -1,4 +1,3 @@
-import 'package:fake_store/presentation/providers/api_response/cart_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -16,7 +15,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  bool _isAuthenticated = false; // Nuevo estado para controlar la navegación
+  bool obscureText = true;
+
+  void _handleObscureText() {
+    setState(() {
+      obscureText = !obscureText;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,17 +30,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     ref.listen<AuthenticationApiResponse>(authenticationProvider, (
       previous,
       current,
-    ) async {
+    ) {
       if (current.errorMessage != null &&
           previous?.errorMessage != current.errorMessage) {
         CustomFloatingNotifications(
           errorMessage: current.errorMessage,
         ).customNotification(TypeVerification.errorMessage);
       }
-      if (current.token.isNotEmpty && !_isAuthenticated) {
-        _isAuthenticated = true;
-        await ref.read(userInfoProvider.notifier).fetchAllUsers();
-        await ref.read(cartProvider.notifier).fetchAllCarts();
+      if (current.token.isNotEmpty) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             context.pop();
@@ -49,6 +51,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: LoginTemplate(
+          obscureText: obscureText,
           isLoadingButton: loginProvider.isLoading,
           passwordController: _passwordController,
           usernameController: _usernameController,
@@ -56,12 +59,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             if (username == null || username.isEmpty) {
               return 'Empty Field';
             }
+
             return null;
           },
           validatorPassword: (password) {
             if (password == null || password.isEmpty) {
               return 'Empty Field';
             }
+
             return null;
           },
           backonPressed: () {
@@ -70,16 +75,19 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           cartonPressed: () {
             context.go('/cart');
           },
-          onPressed: () async {
+          onPressed: () {
             if (_formKey.currentState!.validate()) {
-              await ref
-                  .read(authenticationProvider.notifier)
-                  .fetchAuthentication(
-                    _usernameController.text,
-                    _passwordController.text,
-                  );
+              Future(() async {
+                await ref
+                    .read(authenticationProvider.notifier)
+                    .fetchAuthentication(
+                      _usernameController.text,
+                      _passwordController.text,
+                    );
+              });
             }
           },
+          iconOnPressed: _handleObscureText,
         ),
       ),
     );

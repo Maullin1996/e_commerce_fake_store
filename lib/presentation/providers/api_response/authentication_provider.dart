@@ -1,3 +1,4 @@
+import 'package:fake_store/presentation/providers/api_response/user_provider.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -34,7 +35,8 @@ class AuthenticationApiResponse {
 }
 
 class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
-  AuthenticationNotifier() : super(AuthenticationApiResponse());
+  Ref ref;
+  AuthenticationNotifier(this.ref) : super(AuthenticationApiResponse());
 
   final ApiServices _apiServices = ApiServices();
 
@@ -47,13 +49,15 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
     state = signInResult.fold(
       (failure) =>
           state.copyWith(isLoading: false, errorMessage: failure.message),
-      (token) => state.copyWith(
-        token: token.token,
-        isLoading: false,
-        errorMessage: null,
-        username: username,
-        password: password,
-      ),
+      (token) {
+        ref.read(userInfoProvider.notifier).fetchAllUsers(username, password);
+
+        return state = state.copyWith(
+          isLoading: false,
+          token: token.token,
+          errorMessage: null,
+        );
+      },
     );
   }
 
@@ -66,5 +70,5 @@ final authenticationProvider =
     StateNotifierProvider<AuthenticationNotifier, AuthenticationApiResponse>((
       ref,
     ) {
-      return AuthenticationNotifier(); // Pasar el Ref al constructor
+      return AuthenticationNotifier(ref); // Pasar el Ref al constructor
     });

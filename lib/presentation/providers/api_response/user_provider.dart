@@ -1,6 +1,6 @@
 import 'package:collection/collection.dart';
-import 'package:fake_store/domain/models/user_entity.dart';
-import 'package:fake_store/presentation/providers/api_response/authentication_provider.dart';
+import 'package:fake_store/domain/models/user.dart';
+import 'package:fake_store/presentation/providers/api_response/cart_provider.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,24 +32,26 @@ class UserNotifier extends StateNotifier<UserApiResponse> {
 
   final ApiServices _apiServices = ApiServices();
 
-  Future<void> fetchAllUsers() async {
+  Future<void> fetchAllUsers(String username, String password) async {
     state = state.copyWith(isLoading: true, errorMessage: null);
     final userResult = await _apiServices.fetchUsers();
     state = userResult.fold(
       (failure) =>
           state.copyWith(isLoading: false, errorMessage: failure.message),
       (users) {
-        final userAuthenticated = ref.watch(authenticationProvider);
         final loggedInUser = users.firstWhereOrNull(
-          (user) =>
-              user.username == userAuthenticated.username &&
-              user.password == userAuthenticated.password,
+          (user) => user.username == username && user.password == password,
         );
-        return state.copyWith(
-          isLoading: false,
-          errorMessage: null,
-          user: UsersMapper.userFakeStoreToUser(loggedInUser!),
-        );
+        if (loggedInUser != null) {
+          state = state.copyWith(
+            isLoading: false,
+            errorMessage: null,
+            user: UsersMapper.userFakeStoreToUser(loggedInUser),
+          );
+          ref.read(cartProvider.notifier).fetchAllCarts();
+        }
+
+        return state;
       },
     );
   }

@@ -1,4 +1,4 @@
-import 'package:fake_store/domain/models/product_entity.dart';
+import 'package:fake_store/domain/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CartListProvider extends StateNotifier<List<Product>> {
@@ -7,6 +7,7 @@ class CartListProvider extends StateNotifier<List<Product>> {
   bool addToCart(Product product) {
     if (!state.contains(product)) {
       state = [...state, product];
+
       return true;
     } else {
       return false;

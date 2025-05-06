@@ -1,4 +1,4 @@
-import 'package:fake_store/domain/models/product_entity.dart';
+import 'package:fake_store/domain/models/product.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class FavoriteListProvider extends StateNotifier<List<Product>> {

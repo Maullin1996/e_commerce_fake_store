@@ -1,4 +1,4 @@
-import 'package:fake_store/domain/models/product_entity.dart';
+import 'package:fake_store/domain/models/product.dart';
 import 'package:fake_store/infraestructure/helppers/products/product_mapper.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,7 +17,6 @@ class ProductApiResponse {
   });
 
   ProductApiResponse copyWith({
-    List<Product>? productsByCategory,
     bool? isLoading,
     String? errorMessage,
     String? category,

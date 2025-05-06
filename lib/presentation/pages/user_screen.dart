@@ -15,6 +15,7 @@ class UserScreen extends ConsumerWidget {
     if (userProvider.isLoading || userInfo == null) {
       return Scaffold(body: Center(child: CircularProgressIndicator()));
     }
+
     return UserTemplate(
       backonPressed: () {
         context.pop();

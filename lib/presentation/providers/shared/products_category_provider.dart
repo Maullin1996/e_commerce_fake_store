@@ -1,7 +1,7 @@
-import 'package:fake_store/domain/models/product_entity.dart';
-import 'package:fake_store/presentation/providers/api_response/products_provider.dart';
-import 'package:fake_store/presentation/providers/shared/favorite_provider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fake_store/domain/models/product.dart';
+import 'package:fake_store/presentation/providers/api_response/products_provider.dart';
+import 'package:fake_store/presentation/providers/shared/favorite_list_provider.dart';
 
 final selectedCategoryProvider = StateProvider<String>((ref) => 'All');
 
