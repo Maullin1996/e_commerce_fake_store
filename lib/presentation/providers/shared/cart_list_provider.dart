@@ -49,7 +49,12 @@ class CartListProvider extends StateNotifier<List<Product>> {
   double get totalToPay {
     return state.fold(
       0.0,
-      (total, product) => total + product.price * product.quantity,
+      (total, product) =>
+          total +
+          (product.isPromotion
+                  ? product.price - product.price * product.discount
+                  : product.price) *
+              product.quantity,
     );
   }
 

@@ -12,12 +12,15 @@ class ProductScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isFavorite = ref.watch(myFavoriteListProvider);
+
     return ProductTemplate(
       isFavorite: isFavorite.contains(product),
       url: product.image,
       description: product.description,
       productName: product.title,
-      productPrice: product.price.toString(),
+      productPrice: product.price,
+      isPromotion: product.isPromotion,
+      discount: product.discount,
       backonPressed: () => context.pop(),
       cartonPressed: () => context.push('/cart'),
       onPressedFavorite: () {

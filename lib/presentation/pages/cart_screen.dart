@@ -26,7 +26,6 @@ class CartScreen extends ConsumerWidget {
       },
       logOutonPressed: () {
         ref.read(authenticationProvider.notifier).logOutUser();
-        ref.read(userInfoProvider.notifier).logOutUser();
       },
       lastName: user == null ? '' : user.name.lastname,
       name: user == null ? '' : user.name.firstname,

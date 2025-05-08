@@ -9,12 +9,12 @@ import 'package:fake_store_api_package/methods/api_services.dart';
 import 'products_provider.dart';
 
 class CartApiResponse {
-  final String? errorMessage;
-  final List<Carts>? carts;
+  final String errorMessage;
+  final Carts? carts;
 
-  CartApiResponse({this.errorMessage, this.carts});
+  CartApiResponse({this.errorMessage = '', this.carts});
 
-  CartApiResponse copyWith({String? errorMessage, List<Carts>? carts}) {
+  CartApiResponse copyWith({String? errorMessage, Carts? carts}) {
     return CartApiResponse(
       errorMessage: errorMessage ?? this.errorMessage,
       carts: carts ?? this.carts,
@@ -28,13 +28,14 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
   final ApiServices _apiServices = ApiServices();
 
   Future<void> fetchAllCarts() async {
-    state = state.copyWith(errorMessage: null);
+    state = state.copyWith(errorMessage: '');
     final cartResult = await _apiServices.fetchCarts();
-    state = cartResult.fold(
-      (failure) => state.copyWith(errorMessage: failure.message),
+    cartResult.fold(
+      (failure) {
+        state = state.copyWith(errorMessage: failure.message);
+      },
       (carts) {
-        // List<int> productList;
-        final user = ref.watch(userInfoProvider).user;
+        final User? user = ref.watch(userInfoProvider).user;
         final List<Product> product = ref.watch(productsProvider).products;
         final cartsList =
             carts.map((cart) => CartsMapper.cartFakeStoreToCard(cart)).toList();
@@ -42,6 +43,7 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
           final userCart = cartsList.firstWhereOrNull(
             (cart) => user.id == cart.userId,
           );
+          state = state.copyWith(errorMessage: '', carts: userCart);
           if (userCart != null && userCart.products.isNotEmpty) {
             for (Map<String, dynamic> productId in userCart.products) {
               ref
@@ -54,10 +56,26 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
             }
           }
         }
-
-        return state.copyWith(errorMessage: null, carts: cartsList);
       },
     );
+  }
+
+  void deleteUserCart() {
+    final List<Product> product = ref.watch(productsProvider).products;
+    if (state.carts != null) {
+      if (state.carts?.products != null) {
+        for (Map<String, dynamic> productId in state.carts!.products) {
+          ref
+              .read(cartListProvider.notifier)
+              .removeFromCart(
+                product.firstWhere(
+                  (element) => element.id == productId["productId"],
+                ),
+              );
+        }
+      }
+    }
+    state = state.copyWith(carts: null);
   }
 }
 

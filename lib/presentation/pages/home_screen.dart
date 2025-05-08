@@ -18,11 +18,13 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   String selectedCategory = 'All';
   final List<String> categories = [
     'All', // Display all categories.
+    'Featured', // Top products.
+    'Sale Items', // Best price.
+    "Favorite", // Category base on your preference.
     "electronics", // Category for electronics.
     "jewelery", // Category for jewelery.
     "men's clothing", // Category for men's clothing.
     "women's clothing", // Category for women's clothing.
-    "favorite", // Category base on your preference.
   ];
 
   @override
@@ -66,6 +68,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: HomeTamplate(
+        address: 'CRA 88A # 55W - 44 Sur Medellin',
+        email: 'allstorehouse@correo.com',
+        instagram: 'all.storehouse',
+        whatsapp: '(+57) 3354425145',
         categories: categories,
         isLogIn: authenticationState.token.isNotEmpty,
         name: userProvider == null ? '' : userProvider.name.firstname,
@@ -93,7 +99,6 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         },
         logOutonPressed: () {
           ref.read(authenticationProvider.notifier).logOutUser();
-          ref.read(userInfoProvider.notifier).logOutUser();
         },
         onItemSelected: (String selectedItem) {
           final Product selectedProduct = products.firstWhere(

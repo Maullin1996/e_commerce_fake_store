@@ -47,9 +47,10 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
       username: username,
       password: password,
     );
-    state = signInResult.fold(
-      (failure) =>
-          state.copyWith(isLoading: false, errorMessage: failure.message),
+    signInResult.fold(
+      (failure) {
+        state = state.copyWith(isLoading: false, errorMessage: failure.message);
+      },
       (token) {
         state = state.copyWith(
           errorMessage: '',
@@ -59,7 +60,7 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
         );
         _loadUserAndCart();
 
-        return state = state.copyWith(isLoading: false);
+        state = state.copyWith(isLoading: false);
       },
     );
   }
@@ -77,6 +78,8 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
 
   void logOutUser() {
     state = state.copyWith(token: '', username: null, password: null);
+    ref.read(cartProvider.notifier).deleteUserCart();
+    ref.read(userInfoProvider.notifier).logOutUser();
   }
 }
 
