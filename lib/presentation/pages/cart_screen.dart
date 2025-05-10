@@ -47,6 +47,7 @@ class CartScreen extends ConsumerWidget {
       onPressedminus:
           (product) =>
               ref.read(cartListProvider.notifier).decreaseQuantity(product),
+      onPressedinfo: (product) => context.push('/product', extra: product),
     );
   }
 }

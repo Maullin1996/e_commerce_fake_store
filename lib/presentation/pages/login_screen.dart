@@ -36,7 +36,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           errorMessage: current.errorMessage,
         ).customNotification(TypeVerification.errorMessage);
       }
-      if (current.token.isNotEmpty && !current.isLoading) {
+      if (current.token.isNotEmpty &&
+          !current.isLoading &&
+          ref.read(cartUserVerifier)) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             context.pop();
@@ -50,6 +52,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       child: GestureDetector(
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: LoginTemplate(
+          path: 'assets/images/Logotipo.png',
           obscureText: obscureText,
           isLoadingButton: loginProvider.isLoading,
           passwordController: _passwordController,

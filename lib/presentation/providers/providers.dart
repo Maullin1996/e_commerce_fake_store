@@ -7,3 +7,4 @@ export 'package:fake_store/presentation/providers/api_response/cart_provider.dar
 export 'package:fake_store/presentation/providers/shared/cart_list_provider.dart';
 export 'package:fake_store/presentation/providers/shared/favorite_list_provider.dart';
 export 'package:fake_store/presentation/providers/shared/products_category_provider.dart';
+export 'package:fake_store/presentation/providers/shared/cart_and_user_verifier.dart';

@@ -35,6 +35,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     });
   }
 
+  Future<void> _pullToRefresh() async {
+    await ref.read(productsProvider.notifier).fetchAllProducts();
+  }
+
   void _handleCategorySelection(String category) {
     setState(() {
       selectedCategory = category;
@@ -67,7 +71,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: HomeTamplate(
+      child: HomeTemplate(
         address: 'CRA 88A # 55W - 44 Sur Medellin',
         email: 'allstorehouse@correo.com',
         instagram: 'all.storehouse',
@@ -106,6 +110,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           );
           context.push('/product', extra: selectedProduct);
         },
+        refreshProducts: _pullToRefresh,
       ),
     );
   }

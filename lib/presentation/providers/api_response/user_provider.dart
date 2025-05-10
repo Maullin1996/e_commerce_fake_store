@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart';
 import 'package:fake_store/domain/models/user.dart';
-import 'package:fake_store/presentation/providers/api_response/cart_provider.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

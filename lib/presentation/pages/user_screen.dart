@@ -1,7 +1,7 @@
+import 'package:fake_store_design/template/user_template.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:fake_store_design/template/user_tamplate.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
 
 class UserScreen extends ConsumerWidget {

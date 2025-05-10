@@ -31,27 +31,19 @@ final productsByCategory = Provider<List<Product>>((ref) {
 });
 
 List<Product> _specialFeaturedProducts(
-  List<int> productsId,
+  List<int> productIds,
   List<Product> products,
 ) {
-  List<Product> newProductList = [];
-  if (products.isEmpty) return [];
-  for (int index in productsId) {
-    newProductList.add(products[index - 1]);
-  }
-
-  return newProductList;
+  return products.where((product) => productIds.contains(product.id)).toList();
 }
 
 List<Product> _specialSaleItemsProducts(
   Map<int, double> productsId,
   List<Product> products,
 ) {
-  List<Product> newProductList = [];
   if (products.isEmpty) return [];
-  for (int index in productsId.keys) {
-    newProductList.add(products[index - 1]);
-  }
 
-  return newProductList;
+  return products
+      .where((element) => productsId.keys.contains(element.id))
+      .toList();
 }

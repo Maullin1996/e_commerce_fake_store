@@ -5,13 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductApiResponse {
   final bool isLoading;
-  final String? errorMessage;
+  final String errorMessage;
   final String category;
   final List<Product> products;
 
   ProductApiResponse({
     this.isLoading = false,
-    this.errorMessage,
+    this.errorMessage = '',
     this.category = 'All',
     this.products = const [],
   });
@@ -47,7 +47,7 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
   Future<void> _fetchByCategory(String? categoryPath) async {
     state = state.copyWith(
       isLoading: true,
-      errorMessage: null,
+      errorMessage: '',
       category: categoryPath ?? 'All',
     );
 
@@ -66,7 +66,7 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
                 )
                 .toList(),
         isLoading: false,
-        errorMessage: null,
+        errorMessage: '',
       ),
     );
   }
