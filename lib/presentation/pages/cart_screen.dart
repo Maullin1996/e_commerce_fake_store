@@ -22,6 +22,8 @@ class CartScreen extends ConsumerWidget {
           context.push('/login');
         } else {
           ref.read(cartListProvider.notifier).emptyCart();
+          context.pop();
+          context.go('/home');
         }
       },
       logOutonPressed: () {
