@@ -202,11 +202,9 @@ packages:
   fake_store_design:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: "1d4f836b21a9dd8c61dfa4b4a935f9b02c599e18"
-      url: "https://github.com/Maullin1996/fake_store_design.git"
-    source: git
+      path: "E:\\Archivos\\movile_apps\\practicing\\phase_4\\fake_store_design"
+      relative: false
+    source: path
     version: "0.0.1"
   ffi:
     dependency: transitive

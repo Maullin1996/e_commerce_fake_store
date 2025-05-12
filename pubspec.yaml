@@ -14,9 +14,7 @@ dependencies:
       url: https://github.com/Maullin1996/fake_store_api_package.git
       ref: main
   fake_store_design:
-    git:
-      url: https://github.com/Maullin1996/fake_store_design.git
-      ref: main
+    path: E:/Archivos/movile_apps/practicing/phase_4/fake_store_design
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.6.1

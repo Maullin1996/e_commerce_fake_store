@@ -60,11 +60,41 @@ class Product {
     );
   }
 
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is Product && runtimeType == other.runtimeType && id == other.id;
+  // ✅ Método para convertir a JSON
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'price': price,
+      'description': description,
+      'category': category,
+      'image': image,
+      'quantity': quantity,
+      'isPromotion': isPromotion,
+      'discount': discount,
+    };
+  }
 
-  @override
-  int get hashCode => id.hashCode;
+  // ✅ Método para crear un objeto desde JSON
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product._(
+      id: json['id'],
+      title: json['title'],
+      price: (json['price'] as num).toDouble(),
+      description: json['description'],
+      category: json['category'],
+      image: json['image'],
+      quantity: json['quantity'],
+      isPromotion: json['isPromotion'],
+      discount: (json['discount'] as num).toDouble(),
+    );
+  }
+
+  // @override
+  // bool operator ==(Object other) =>
+  //     identical(this, other) ||
+  //     other is Product && runtimeType == other.runtimeType && id == other.id;
+
+  // @override
+  // int get hashCode => id.hashCode;
 }

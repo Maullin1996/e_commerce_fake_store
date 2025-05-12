@@ -30,8 +30,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(Duration.zero, () {
-      ref.read(productsProvider.notifier).fetchAllProducts();
+    Future.delayed(Duration.zero, () async {
+      final storedProducts = await ref.read(localProductsProvider.future);
+      if (storedProducts.isEmpty) {
+        await ref.read(productsProvider.notifier).fetchAllProducts();
+      }
     });
   }
 
@@ -72,6 +75,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: HomeTemplate(
+        assetsImage: 'assets/images/error.png',
         address: 'CRA 88A # 55W - 44 Sur Medellin',
         email: 'allstorehouse@correo.com',
         instagram: 'all.storehouse',

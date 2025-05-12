@@ -16,6 +16,7 @@ class CartScreen extends ConsumerWidget {
     final user = ref.watch(userInfoProvider).user;
 
     return CartTemplate(
+      assetsImage: 'assets/images/error.png',
       onDialogButtonPressed: () {
         if (token.isEmpty) {
           context.pop();

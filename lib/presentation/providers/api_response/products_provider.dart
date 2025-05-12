@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:fake_store/domain/models/product.dart';
+import 'package:fake_store/domain/services/key_value_storage_service.dart';
 import 'package:fake_store/infraestructure/helppers/products/product_mapper.dart';
+import 'package:fake_store/infraestructure/services/key_value_storage.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -32,8 +36,9 @@ class ProductApiResponse {
 }
 
 class ProductNotifier extends StateNotifier<ProductApiResponse> {
-  ProductNotifier() : super(ProductApiResponse());
+  ProductNotifier(this.keyValueStorageService) : super(ProductApiResponse());
 
+  final KeyValueStorageService keyValueStorageService;
   final ApiServices _apiServices = ApiServices();
 
   Future<void> fetchAllProducts() async {
@@ -55,24 +60,41 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
       category: categoryPath,
     );
 
-    state = productResult.fold(
-      (failure) =>
-          state.copyWith(isLoading: false, errorMessage: failure.message),
-      (products) => state.copyWith(
-        products:
-            products
-                .map(
-                  (product) => ProductMapper.productFakeStoreToProduct(product),
-                )
-                .toList(),
-        isLoading: false,
-        errorMessage: '',
-      ),
+    productResult.fold(
+      (failure) async {
+        state = state.copyWith(
+          isLoading: false,
+          errorMessage: failure.message,
+          products: [],
+        );
+        await keyValueStorageService.removeKey('products');
+      },
+      (products) async {
+        state = state.copyWith(
+          products:
+              products
+                  .map(
+                    (product) =>
+                        ProductMapper.productFakeStoreToProduct(product),
+                  )
+                  .toList(),
+          isLoading: false,
+          errorMessage: '',
+        );
+        final jsonList =
+            state.products.map((product) => product.toJson()).toList();
+        await keyValueStorageService.setKeyValue(
+          'products',
+          jsonEncode(jsonList),
+        );
+      },
     );
   }
 }
 
 final productsProvider =
     StateNotifierProvider<ProductNotifier, ProductApiResponse>((ref) {
-      return ProductNotifier();
+      final keyValueStorage = KeyValueStorage();
+
+      return ProductNotifier(keyValueStorage);
     });

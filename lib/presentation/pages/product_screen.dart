@@ -14,6 +14,7 @@ class ProductScreen extends ConsumerWidget {
     final isFavorite = ref.watch(myFavoriteListProvider);
 
     return ProductTemplate(
+      assetsImage: 'assets/images/error.png',
       isFavorite: isFavorite.contains(product),
       url: product.image,
       description: product.description,
