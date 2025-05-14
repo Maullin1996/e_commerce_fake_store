@@ -50,10 +50,12 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
   }
 
   Future<void> _fetchByCategory(String? categoryPath) async {
+    await keyValueStorageService.removeKey('products');
     state = state.copyWith(
       isLoading: true,
       errorMessage: '',
       category: categoryPath ?? 'All',
+      products: const [],
     );
 
     final productResult = await _apiServices.fetchProducts(
@@ -61,13 +63,12 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
     );
 
     productResult.fold(
-      (failure) async {
+      (failure) {
         state = state.copyWith(
           isLoading: false,
           errorMessage: failure.message,
-          products: [],
+          products: const [],
         );
-        await keyValueStorageService.removeKey('products');
       },
       (products) async {
         state = state.copyWith(

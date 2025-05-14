@@ -49,7 +49,7 @@ class Product {
   }
 
   Product copyWith({int? quantity}) {
-    return Product(
+    return Product._(
       id: id,
       title: title,
       price: price,
@@ -57,6 +57,8 @@ class Product {
       category: category,
       image: image,
       quantity: quantity ?? this.quantity,
+      isPromotion: isPromotion,
+      discount: discount,
     );
   }
 
@@ -90,11 +92,11 @@ class Product {
     );
   }
 
-  // @override
-  // bool operator ==(Object other) =>
-  //     identical(this, other) ||
-  //     other is Product && runtimeType == other.runtimeType && id == other.id;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is Product && runtimeType == other.runtimeType && id == other.id;
 
-  // @override
-  // int get hashCode => id.hashCode;
+  @override
+  int get hashCode => id.hashCode;
 }

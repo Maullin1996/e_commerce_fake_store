@@ -25,7 +25,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final loginProvider = ref.watch(authenticationProvider);
+    final bool authenticationStatus =
+        ref.watch(authenticationProvider).isLoading;
 
     ref.listen<AuthenticationApiResponse>(authenticationProvider, (
       previous,
@@ -36,9 +37,10 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           errorMessage: current.errorMessage,
         ).customNotification(TypeVerification.errorMessage);
       }
-      if (current.token.isNotEmpty &&
-          !current.isLoading &&
-          ref.read(cartUserVerifier)) {
+    });
+
+    ref.listen<bool>(hasCartOrUser, (previous, current) {
+      if (current) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (mounted) {
             context.pop();
@@ -54,7 +56,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         child: LoginTemplate(
           path: 'assets/images/Logotipo.png',
           obscureText: obscureText,
-          isLoadingButton: loginProvider.isLoading,
+          isLoadingButton: authenticationStatus,
           passwordController: _passwordController,
           usernameController: _usernameController,
           validatorUsername: (username) {

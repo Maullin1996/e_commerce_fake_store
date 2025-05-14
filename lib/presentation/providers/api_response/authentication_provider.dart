@@ -64,7 +64,6 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
           password: password,
         );
         _loadUserAndCart();
-        state = state.copyWith(isLoading: false);
       },
     );
   }
@@ -79,6 +78,7 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
     if (ref.read(userInfoProvider).user != null) {
       await ref.read(cartProvider.notifier).fetchAllCarts();
     }
+    state = state.copyWith(isLoading: false);
   }
 
   void logOutUser() async {
@@ -89,14 +89,14 @@ class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
   }
 }
 
-final authenticationProvider = StateNotifierProvider.autoDispose<
-  AuthenticationNotifier,
-  AuthenticationApiResponse
->((ref) {
-  final keyValueStorage = KeyValueStorage();
+final authenticationProvider =
+    StateNotifierProvider<AuthenticationNotifier, AuthenticationApiResponse>((
+      ref,
+    ) {
+      final keyValueStorage = KeyValueStorage();
 
-  return AuthenticationNotifier(
-    ref,
-    keyValueStorage,
-  ); // Pasar el Ref al constructor
-});
+      return AuthenticationNotifier(
+        ref,
+        keyValueStorage,
+      ); // Pasar el Ref al constructor
+    });

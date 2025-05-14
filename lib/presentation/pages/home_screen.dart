@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:fake_store_design/design_system.dart';
-
-//import 'package:fake_store/presentation/helpers/category_selected.dart';
 import 'package:fake_store/domain/models.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
 
