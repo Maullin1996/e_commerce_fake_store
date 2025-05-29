@@ -38,17 +38,20 @@ class AuthenticationApiResponse {
 }
 
 class AuthenticationNotifier extends StateNotifier<AuthenticationApiResponse> {
-  Ref ref;
+  final Ref ref;
+  final ApiServices apiServices;
 
-  AuthenticationNotifier(this.ref, this.keyValueStorageService)
-    : super(AuthenticationApiResponse());
+  AuthenticationNotifier(
+    this.ref,
+    this.keyValueStorageService,
+    this.apiServices,
+  ) : super(AuthenticationApiResponse());
 
-  final ApiServices _apiServices = ApiServices();
   final KeyValueStorageService keyValueStorageService;
 
   Future<void> fetchAuthentication(String username, String password) async {
     state = state.copyWith(isLoading: true, errorMessage: '');
-    final signInResult = await _apiServices.fetchAuth(
+    final signInResult = await apiServices.fetchAuth(
       username: username,
       password: password,
     );
@@ -98,5 +101,6 @@ final authenticationProvider =
       return AuthenticationNotifier(
         ref,
         keyValueStorage,
+        ApiServices(),
       ); // Pasar el Ref al constructor
     });

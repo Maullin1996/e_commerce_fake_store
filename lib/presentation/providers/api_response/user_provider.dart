@@ -15,41 +15,47 @@ class UserApiResponse {
   UserApiResponse copyWith({
     bool? isLoading,
     String? errorMessage,
-    User? user,
+    Object? user = _sentinel,
   }) {
     return UserApiResponse(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
-      user: user ?? this.user,
+      user: user == _sentinel ? this.user : user as User?,
     );
   }
+
+  static const _sentinel = Object();
 }
 
 class UserNotifier extends StateNotifier<UserApiResponse> {
   final Ref ref;
-  UserNotifier(this.ref) : super(UserApiResponse());
+  final ApiServices apiServices;
 
-  final ApiServices _apiServices = ApiServices();
+  UserNotifier(this.ref, this.apiServices) : super(UserApiResponse());
 
   Future<void> fetchAllUsers(String username, String password) async {
-    state = state.copyWith(isLoading: true, errorMessage: null);
-    final userResult = await _apiServices.fetchUsers();
-    state = userResult.fold(
+    state = state.copyWith(isLoading: true, errorMessage: '');
+    final userResult = await apiServices.fetchUsers();
+    userResult.fold(
       (failure) =>
-          state.copyWith(isLoading: false, errorMessage: failure.message),
+          state = state.copyWith(
+            isLoading: false,
+            errorMessage: failure.message,
+          ),
       (users) {
         final loggedInUser = users.firstWhereOrNull(
           (user) => user.username == username && user.password == password,
         );
-        if (loggedInUser != null) {
-          state = state.copyWith(
-            isLoading: false,
-            errorMessage: null,
-            user: UsersMapper.userFakeStoreToUser(loggedInUser),
-          );
-        }
-
-        return state;
+        (loggedInUser != null)
+            ? state = state.copyWith(
+              isLoading: false,
+              errorMessage: '',
+              user: UsersMapper.userFakeStoreToUser(loggedInUser),
+            )
+            : state = state.copyWith(
+              isLoading: false,
+              errorMessage: 'User not found',
+            );
       },
     );
   }
@@ -62,5 +68,5 @@ class UserNotifier extends StateNotifier<UserApiResponse> {
 final userInfoProvider = StateNotifierProvider<UserNotifier, UserApiResponse>((
   ref,
 ) {
-  return UserNotifier(ref);
+  return UserNotifier(ref, ApiServices());
 });

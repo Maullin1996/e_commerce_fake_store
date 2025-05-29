@@ -5,5 +5,6 @@ String? formValidator(input) {
   if (input.length <= 4) {
     return 'User or password to short';
   }
+
   return null;
 }

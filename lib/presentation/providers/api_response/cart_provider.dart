@@ -16,26 +16,28 @@ class CartApiResponse {
 
   CartApiResponse copyWith({
     String? errorMessage,
-    Carts? carts,
+    Object? carts = _sentinel,
     bool? isLoading,
   }) {
     return CartApiResponse(
       isLoading: isLoading ?? this.isLoading,
       errorMessage: errorMessage ?? this.errorMessage,
-      carts: carts ?? this.carts,
+      carts: carts == _sentinel ? this.carts : carts as Carts?,
     );
   }
+
+  static const _sentinel = Object();
 }
 
 class CartNotifier extends StateNotifier<CartApiResponse> {
   final Ref ref;
-  CartNotifier(this.ref) : super(CartApiResponse());
-  final ApiServices _apiServices = ApiServices();
+  final ApiServices apiServices;
+  CartNotifier(this.ref, this.apiServices) : super(CartApiResponse());
 
   Future<void> fetchAllCarts() async {
     final List<Product> product = await ref.read(localProductsProvider.future);
     state = state.copyWith(errorMessage: '', isLoading: true);
-    final cartResult = await _apiServices.fetchCarts();
+    final cartResult = await apiServices.fetchCarts();
     cartResult.fold(
       (failure) {
         state = state.copyWith(errorMessage: failure.message, isLoading: false);
@@ -44,6 +46,13 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
         final User? user = ref.watch(userInfoProvider).user;
         final cartsList =
             carts.map((cart) => CartsMapper.cartFakeStoreToCard(cart)).toList();
+        if (user == null) {
+          state = state.copyWith(
+            errorMessage: 'User Not Found',
+            carts: null,
+            isLoading: false,
+          );
+        }
         if (user != null) {
           final userCart = cartsList.firstWhereOrNull(
             (cart) => user.id == cart.userId,
@@ -99,5 +108,5 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
 final cartProvider = StateNotifierProvider<CartNotifier, CartApiResponse>((
   ref,
 ) {
-  return CartNotifier(ref);
+  return CartNotifier(ref, ApiServices());
 });

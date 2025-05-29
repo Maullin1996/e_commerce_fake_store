@@ -36,18 +36,19 @@ class ProductApiResponse {
 }
 
 class ProductNotifier extends StateNotifier<ProductApiResponse> {
-  ProductNotifier(this.keyValueStorageService) : super(ProductApiResponse());
+  final ApiServices apiServices;
+  ProductNotifier(this.keyValueStorageService, this.apiServices)
+    : super(ProductApiResponse());
 
   final KeyValueStorageService keyValueStorageService;
-  final ApiServices _apiServices = ApiServices();
 
   Future<void> fetchAllProducts() async {
     await _fetchByCategory(null);
   }
 
-  Future<void> fetchByCategory(String? categoryPath) async {
-    await _fetchByCategory(categoryPath);
-  }
+  // Future<void> fetchByCategory(String? categoryPath) async {
+  //   await _fetchByCategory(categoryPath);
+  // }
 
   Future<void> _fetchByCategory(String? categoryPath) async {
     await keyValueStorageService.removeKey('products');
@@ -58,7 +59,7 @@ class ProductNotifier extends StateNotifier<ProductApiResponse> {
       products: const [],
     );
 
-    final productResult = await _apiServices.fetchProducts(
+    final productResult = await apiServices.fetchProducts(
       category: categoryPath,
     );
 
@@ -97,5 +98,5 @@ final productsProvider =
     StateNotifierProvider<ProductNotifier, ProductApiResponse>((ref) {
       final keyValueStorage = KeyValueStorage();
 
-      return ProductNotifier(keyValueStorage);
+      return ProductNotifier(keyValueStorage, ApiServices());
     });

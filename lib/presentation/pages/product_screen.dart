@@ -17,6 +17,7 @@ class ProductScreen extends ConsumerWidget {
       assetsImage: 'assets/images/error.png',
       isFavorite: isFavorite.contains(product),
       url: product.image,
+      id: product.id,
       description: product.description,
       productName: product.title,
       productPrice: product.price,
