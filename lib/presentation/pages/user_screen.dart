@@ -21,7 +21,7 @@ class UserScreen extends ConsumerWidget {
         context.pop();
       },
       cartonPressed: () {
-        context.push('/cart');
+        context.go('/cart');
       },
       logOutonPressed: () {
         ref.read(authenticationProvider.notifier).logOutUser();

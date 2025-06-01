@@ -1,22 +1,25 @@
 import 'dart:async';
 
+import 'package:fake_store/domain/services/key_value_storage_service.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
+import 'package:fake_store/presentation/providers/shared/products_category_provider.dart';
 import 'package:fake_store_api_package/errors/index_errors.dart';
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart';
 import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:riverpod/riverpod.dart';
 
-import '../mock/business_rules_mock_test.dart';
-import '../mock/fake_mock_test.dart';
-import 'user_provider_test.mocks.dart';
+import '../mock/business_rules_mock.dart';
+import '../mock/fake_mock.dart';
+import 'cart_provider_test.mocks.dart';
 
 @GenerateMocks(
-  [FakeStoreApi, ApiErrorHandler],
+  [FakeStoreApi, ApiErrorHandler, KeyValueStorageService],
   customMocks: [
+    MockSpec<KeyValueStorageService>(as: #GeneratedMockKeyValue),
     MockSpec<FakeStoreApi>(as: #GeneratedMockFakeStoreApi),
     MockSpec<ApiErrorHandler>(as: #GeneratedMockApiErrorHandler),
   ],
@@ -25,12 +28,14 @@ void main() {
   late ApiServices apiServices;
   late GeneratedMockFakeStoreApi mockFakeStoreApi;
   late GeneratedMockApiErrorHandler mockApiErrorHandler;
+  late GeneratedMockKeyValue mockKeyValueStorage;
   late ProviderContainer container;
 
   group('CartNotifier Tests', () {
     setUp(() {
       mockFakeStoreApi = GeneratedMockFakeStoreApi();
       mockApiErrorHandler = GeneratedMockApiErrorHandler();
+      mockKeyValueStorage = GeneratedMockKeyValue();
       apiServices = ApiServices(
         fakeStoreApi: mockFakeStoreApi,
         errorHandler: mockApiErrorHandler,
@@ -41,12 +46,13 @@ void main() {
           cartProvider.overrideWith((ref) => CartNotifier(ref, apiServices)),
           userInfoProvider.overrideWith(
             (ref) => UserNotifier(ref, apiServices)
-              ..state = UserApiResponse(
-                user: BusinessRulesMockTest.mockUsers[0],
-              ),
+              ..state = UserApiResponse(user: BusinessRulesMock.mockUsers[0]),
           ),
-          localProductsProvider.overrideWith(
-            (ref) async => BusinessRulesMockTest.mockProducts,
+          productsProvider.overrideWith(
+            (ref) => ProductsNotifier(mockKeyValueStorage, apiServices)
+              ..state = ProductsApiResponse(
+                allProducts: BusinessRulesMock.mockProducts,
+              ),
           ),
         ],
       );
@@ -57,7 +63,7 @@ void main() {
       // Arrange
       when(
         mockFakeStoreApi.fetchCart('/carts'),
-      ).thenAnswer((_) async => FakeMockTest.cartMock);
+      ).thenAnswer((_) async => FakeMock.cartMock);
 
       // Act
       await container.read(cartProvider.notifier).fetchAllCarts();
@@ -104,7 +110,7 @@ void main() {
       // Assert
       expect(container.read(cartProvider).isLoading, isTrue);
 
-      completer.complete(FakeMockTest.cartMock);
+      completer.complete(FakeMock.cartMock);
       await future;
 
       // Assert
@@ -115,7 +121,7 @@ void main() {
       container.read(cartProvider.notifier).state = container
           .read(cartProvider.notifier)
           .state
-          .copyWith(carts: BusinessRulesMockTest.mockCarts[0]);
+          .copyWith(carts: BusinessRulesMock.mockCarts[0]);
 
       // Act
       container.read(cartProvider.notifier).deleteUserCart();
@@ -160,7 +166,7 @@ void main() {
                   ..state = UserApiResponse(user: null),
           ),
           localProductsProvider.overrideWith(
-            (ref) async => BusinessRulesMockTest.mockProducts,
+            (ref) async => BusinessRulesMock.mockProducts,
           ),
         ],
       );
@@ -171,7 +177,7 @@ void main() {
       // Arrange
       when(
         mockFakeStoreApi.fetchCart('/carts'),
-      ).thenAnswer((_) async => FakeMockTest.cartMock);
+      ).thenAnswer((_) async => FakeMock.cartMock);
       //  Act
       await container.read(cartProvider.notifier).fetchAllCarts();
       final state = container.read(cartProvider);
@@ -197,12 +203,10 @@ void main() {
           cartProvider.overrideWith((ref) => CartNotifier(ref, apiServices)),
           userInfoProvider.overrideWith(
             (ref) => UserNotifier(ref, apiServices)
-              ..state = UserApiResponse(
-                user: BusinessRulesMockTest.mockUsers[2],
-              ),
+              ..state = UserApiResponse(user: BusinessRulesMock.mockUsers[2]),
           ),
           localProductsProvider.overrideWith(
-            (ref) async => BusinessRulesMockTest.mockProducts,
+            (ref) async => BusinessRulesMock.mockProducts,
           ),
         ],
       );
@@ -213,7 +217,7 @@ void main() {
       // Arrange
       when(
         mockFakeStoreApi.fetchCart('/carts'),
-      ).thenAnswer((_) async => FakeMockTest.cartMock);
+      ).thenAnswer((_) async => FakeMock.cartMock);
       //  Act
       await container.read(cartProvider.notifier).fetchAllCarts();
       final state = container.read(cartProvider);

@@ -1,10 +1,8 @@
-import 'package:fake_store/presentation/providers/shared/products_category_provider.dart';
+import 'package:fake_store/presentation/providers/providers.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:collection/collection.dart';
 import 'package:fake_store/domain/models.dart';
 import 'package:fake_store/infraestructure/helppers/carts/carts_mapper.dart';
-import 'package:fake_store/presentation/providers/api_response/user_provider.dart';
-import 'package:fake_store/presentation/providers/shared/cart_list_provider.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 
 class CartApiResponse {
@@ -35,7 +33,7 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
   CartNotifier(this.ref, this.apiServices) : super(CartApiResponse());
 
   Future<void> fetchAllCarts() async {
-    final List<Product> product = await ref.read(localProductsProvider.future);
+    final List<Product> product = ref.read(productsProvider).allProducts;
     state = state.copyWith(errorMessage: '', isLoading: true);
     final cartResult = await apiServices.fetchCarts();
     cartResult.fold(
@@ -79,28 +77,21 @@ class CartNotifier extends StateNotifier<CartApiResponse> {
   }
 
   void deleteUserCart() {
-    final asyncProducts = ref.read(localProductsProvider);
+    final allProducts = ref.read(productsProvider).allProducts;
 
-    asyncProducts.when(
-      data: (data) {
-        if (state.carts != null) {
-          if (state.carts?.products != null) {
-            for (Map<String, dynamic> productId in state.carts!.products) {
-              ref
-                  .read(cartListProvider.notifier)
-                  .removeFromCart(
-                    data.firstWhere(
-                      (element) => element.id == productId["productId"],
-                    ),
-                  );
-            }
-          }
+    if (state.carts != null) {
+      if (state.carts?.products != null) {
+        for (Map<String, dynamic> productId in state.carts!.products) {
+          ref
+              .read(cartListProvider.notifier)
+              .removeFromCart(
+                allProducts.firstWhere(
+                  (element) => element.id == productId["productId"],
+                ),
+              );
         }
-      },
-      error: (_, _) => [],
-      loading: () => [],
-    );
-
+      }
+    }
     state = state.copyWith(carts: null);
   }
 }

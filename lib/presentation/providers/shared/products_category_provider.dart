@@ -16,7 +16,7 @@ final localProductsProvider = FutureProvider<List<Product>>((ref) async {
 
   final decoded = jsonDecode(jsonString) as List;
 
-  return decoded.map((e) => Product.fromJson(e)).toList();
+  return decoded.map((products) => Product.fromJson(products)).toList();
 });
 
 final productsByCategory = Provider<List<Product>>((ref) {

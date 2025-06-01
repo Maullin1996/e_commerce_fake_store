@@ -8,11 +8,11 @@ import 'package:fake_store_api_package/errors/structure/fetch_fake_store_excepti
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart';
 import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:riverpod/riverpod.dart';
-import '../mock/fake_mock_test.dart';
+import '../mock/fake_mock.dart';
 import 'products_provider_test.mocks.dart';
 
 @GenerateMocks(
@@ -53,7 +53,7 @@ void main() {
       // Arrange
       when(
         mockFakeStoreApi.fetchProducts('/products'),
-      ).thenAnswer((_) async => FakeMockTest.productMock);
+      ).thenAnswer((_) async => FakeMock.productMock);
 
       when(mockKeyValueStorage.removeKey(any)).thenAnswer((_) async => true);
 
@@ -108,7 +108,7 @@ void main() {
       //  Assert
       expect(container.read(productsProvider).isLoading, isTrue);
 
-      completer.complete(FakeMockTest.productMock);
+      completer.complete(FakeMock.productMock);
       await future;
 
       // Assert
@@ -119,7 +119,7 @@ void main() {
       // Arrange
       when(
         mockFakeStoreApi.fetchProducts('/products'),
-      ).thenAnswer((_) async => FakeMockTest.productMock);
+      ).thenAnswer((_) async => FakeMock.productMock);
       when(mockKeyValueStorage.removeKey(any)).thenAnswer((_) async => true);
       when(
         mockKeyValueStorage.setKeyValue(any, any),

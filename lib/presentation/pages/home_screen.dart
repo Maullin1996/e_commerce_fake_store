@@ -25,26 +25,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     "women's clothing", // Category for women's clothing.
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(Duration.zero, () async {
-      final storedProducts = await ref.read(localProductsProvider.future);
-      if (storedProducts.isEmpty) {
-        await ref.read(productsProvider.notifier).fetchAllProducts();
-      }
-    });
-  }
-
   Future<void> _pullToRefresh() async {
     await ref.read(productsProvider.notifier).fetchAllProducts();
   }
 
   void _handleCategorySelection(String category) {
-    setState(() {
-      selectedCategory = category;
-    });
-    ref.read(selectedCategoryProvider.notifier).state = category;
+    ref.read(productsProvider.notifier).setCategory(category);
   }
 
   void _handleIsFavorite(product) {
@@ -63,12 +49,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final productApiResponse = ref.watch(productsProvider);
+    final productSate = ref.watch(productsProvider);
     final List<Product> myFavoriteList = ref.watch(myFavoriteListProvider);
     final List<Product> myCartList = ref.watch(cartListProvider);
-    final List<Product> products = ref.watch(productsByCategory);
     final authenticationState = ref.watch(authenticationProvider);
     final userProvider = ref.watch(userInfoProvider).user;
+
+    List<Product> products;
+    (productSate.selectedCategory == 'Favorite')
+        ? products = myFavoriteList
+        : products = productSate.filteredProducts;
 
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
@@ -82,12 +72,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
         isLogIn: authenticationState.token.isNotEmpty,
         name: userProvider == null ? '' : userProvider.name.firstname,
         lastName: userProvider == null ? '' : userProvider.name.lastname,
-        errorMessage: productApiResponse.errorMessage,
-        isLoading: productApiResponse.isLoading,
+        errorMessage: productSate.errorMessage,
+        isLoading: productSate.isLoading,
         products: products,
         myFavoriteList: myFavoriteList,
         myCartList: myCartList,
-        selectedCategory: selectedCategory,
+        selectedCategory: productSate.selectedCategory,
         onCategorySelected: _handleCategorySelection,
         onPressedinfo: (product) {
           context.push('/product', extra: product);

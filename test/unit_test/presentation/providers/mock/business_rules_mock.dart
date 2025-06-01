@@ -1,6 +1,6 @@
 import 'package:fake_store/domain/models.dart';
 
-class BusinessRulesMockTest {
+class BusinessRulesMock {
   // User Mock
   static final List<User> mockUsers = [
     User(
@@ -124,7 +124,8 @@ class BusinessRulesMockTest {
       description:
           'Enhance your yoga practice with this non-slip, comfortable yoga mat. Includes a convenient carrying strap for easy transport.',
       category: 'Sports & Outdoors',
-      image: 'https://example.com/images/yoga_mat.jpg',
+      image:
+          'https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg',
       quantity: 1,
     ),
     Product(

@@ -5,6 +5,8 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'dart:async' as _i6;
 
+import 'package:fake_store/domain/services/key_value_storage_service.dart'
+    as _i8;
 import 'package:fake_store_api_package/errors/index_errors.dart' as _i3;
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart'
     as _i4;
@@ -150,6 +152,96 @@ class MockApiErrorHandler extends _i1.Mock implements _i3.ApiErrorHandler {
           ),
         ),
       ) as _i3.ApiFailure);
+}
+
+/// A class which mocks [KeyValueStorageService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockKeyValueStorageService extends _i1.Mock
+    implements _i8.KeyValueStorageService {
+  MockKeyValueStorageService() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<void> setKeyValue<T>(
+    String? key,
+    T? value,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setKeyValue,
+          [
+            key,
+            value,
+          ],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<T?> getValue<T>(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #getValue,
+          [key],
+        ),
+        returnValue: _i6.Future<T?>.value(),
+      ) as _i6.Future<T?>);
+
+  @override
+  _i6.Future<bool> removeKey(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #removeKey,
+          [key],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
+}
+
+/// A class which mocks [KeyValueStorageService].
+///
+/// See the documentation for Mockito's code generation for more information.
+class GeneratedMockKeyValue extends _i1.Mock
+    implements _i8.KeyValueStorageService {
+  GeneratedMockKeyValue() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<void> setKeyValue<T>(
+    String? key,
+    T? value,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #setKeyValue,
+          [
+            key,
+            value,
+          ],
+        ),
+        returnValue: _i6.Future<void>.value(),
+        returnValueForMissingStub: _i6.Future<void>.value(),
+      ) as _i6.Future<void>);
+
+  @override
+  _i6.Future<T?> getValue<T>(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #getValue,
+          [key],
+        ),
+        returnValue: _i6.Future<T?>.value(),
+      ) as _i6.Future<T?>);
+
+  @override
+  _i6.Future<bool> removeKey(String? key) => (super.noSuchMethod(
+        Invocation.method(
+          #removeKey,
+          [key],
+        ),
+        returnValue: _i6.Future<bool>.value(false),
+      ) as _i6.Future<bool>);
 }
 
 /// A class which mocks [FakeStoreApi].

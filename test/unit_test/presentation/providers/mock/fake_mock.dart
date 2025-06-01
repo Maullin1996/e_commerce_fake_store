@@ -1,6 +1,6 @@
 import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
 
-abstract class FakeMockTest {
+abstract class FakeMock {
   static final List<CartsFakeStore> cartMock = [
     CartsFakeStore(
       id: 1,

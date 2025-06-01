@@ -6,13 +6,13 @@ import 'package:fake_store_api_package/infraestructure/driven-adapter/api/auth_f
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart';
 import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:riverpod/riverpod.dart';
 
-import '../mock/business_rules_mock_test.dart';
-import '../mock/fake_mock_test.dart';
+import '../mock/business_rules_mock.dart';
+import '../mock/fake_mock.dart';
 import 'user_provider_test.mocks.dart';
 
 @GenerateMocks(
@@ -53,7 +53,7 @@ void main() {
 
       when(
         mockFakeStoreApi.fetchUser('/users'),
-      ).thenAnswer((_) async => FakeMockTest.userMock);
+      ).thenAnswer((_) async => FakeMock.userMock);
 
       //     Act
       await container
@@ -94,7 +94,7 @@ void main() {
     test('Return no user when credentials do not match', () async {
       when(
         mockFakeStoreApi.fetchUser('/users'),
-      ).thenAnswer((_) async => FakeMockTest.userMock);
+      ).thenAnswer((_) async => FakeMock.userMock);
 
       // Act
       await container
@@ -114,7 +114,7 @@ void main() {
       container.read(userInfoProvider.notifier).state = container
           .read(userInfoProvider.notifier)
           .state
-          .copyWith(user: BusinessRulesMockTest.mockUsers[1]);
+          .copyWith(user: BusinessRulesMock.mockUsers[1]);
 
       // Act
       container.read(userInfoProvider.notifier).logOutUser();
@@ -139,7 +139,7 @@ void main() {
       // Assert
       expect(container.read(userInfoProvider).isLoading, isTrue);
 
-      completer.complete(FakeMockTest.userMock);
+      completer.complete(FakeMock.userMock);
       await future;
 
       // Assert

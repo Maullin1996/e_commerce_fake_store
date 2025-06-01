@@ -1,5 +1,5 @@
 abstract class SpecialCategories {
-  static List<int> featured = [3, 5, 6, 8, 4, 7, 5, 15, 12];
+  static List<int> featured = [1, 3, 5, 6, 8, 4, 7, 5, 15, 12];
   static Map<int, double> saleItems = {
     1: 0.1,
     9: 0.15,
