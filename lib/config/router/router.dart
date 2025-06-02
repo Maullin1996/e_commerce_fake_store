@@ -5,19 +5,35 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
+// Defines the application's route system using GoRouter, managed by Riverpod.
 final appRouterProvider = Provider<GoRouter>(
   (ref) => GoRouter(
+    // Initial screen when the app starts
     initialLocation: '/home',
+
+    // Redirect logic that controls access based on login and other conditions
     redirect: (context, state) {
+      // Retrieve the token from the authentication provider (e.g., representing a password or session token)
       final String token = ref.read(authenticationProvider).password;
+
+      // Check if either user info or a cart exists
       final bool userAndCartVerification = ref.read(hasCartOrUser);
+
+      // Check if the current route is the login screen
       final isLoggingIn = state.path == '/login';
 
-      if (token.isNotEmpty && isLoggingIn && userAndCartVerification) '/home';
+      // Redirect logged-in users away from the login screen to home
+      if (token.isNotEmpty && isLoggingIn && userAndCartVerification) {
+        return '/home';
+      }
 
+      // No redirection by default
       return null;
     },
+
+    // App routes
     routes: <RouteBase>[
+      // Home screen route with custom transition
       GoRoute(
         path: '/home',
         pageBuilder: (context, state) {
@@ -31,7 +47,11 @@ final appRouterProvider = Provider<GoRouter>(
           );
         },
       ),
+
+      // Cart screen route
       GoRoute(path: '/cart', builder: (context, state) => const CartScreen()),
+
+      // Product screen route with a fade transition and passed product data
       GoRoute(
         path: '/product',
         pageBuilder: (context, state) {
@@ -52,7 +72,11 @@ final appRouterProvider = Provider<GoRouter>(
           );
         },
       ),
+
+      // Login screen route
       GoRoute(path: '/login', builder: (context, state) => const LoginScreen()),
+
+      // User profile/settings screen route
       GoRoute(path: '/user', builder: (context, state) => const UserScreen()),
     ],
   ),

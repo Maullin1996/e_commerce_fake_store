@@ -23,10 +23,7 @@ void main() {
 
       // Assert
       expect(modified.token, equals('newToken'));
-      expect(
-        original.token,
-        equals('originalToken'),
-      ); // original remains unchanged
+      expect(original.token, equals('originalToken'));
     });
 
     test('copyWith with no parameters should retain the original token', () {

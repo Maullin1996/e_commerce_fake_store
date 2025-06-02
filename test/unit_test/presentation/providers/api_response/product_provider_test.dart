@@ -4,7 +4,6 @@ import 'package:dartz/dartz.dart';
 import 'package:fake_store/domain/services/key_value_storage_service.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
 import 'package:fake_store_api_package/errors/index_errors.dart';
-import 'package:fake_store_api_package/errors/structure/failure.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -53,7 +52,7 @@ void main() {
         // Act
         final notifier = ProductsNotifier(mockKeyValueStorage, mockApiServices);
 
-        // Assert initial state immediately (before async initialization completes)
+        // Assert initial state
         expect(notifier.state.isLoading, false);
         expect(notifier.state.errorMessage, '');
         expect(notifier.state.allProducts, isEmpty);
@@ -172,7 +171,7 @@ void main() {
         // Assert
         final state = container.read(productsProvider);
         expect(state.isLoading, false);
-        expect(state.errorMessage, startsWith('Error inespetado:'));
+        expect(state.errorMessage, startsWith('Unexpected error:'));
       });
     });
 

@@ -150,9 +150,6 @@ void main() {
       expect(state.token, isEmpty);
       expect(state.username, isEmpty);
       expect(state.password, isEmpty);
-
-      // Fixed verify call - remove the lambda function syntax
-      //verify(mockKeyValueStorage.removeKey('token')).called(1);
     });
     test('AuthenticationApiResponse copyWith returns modified object', () {
       final original = AuthenticationApiResponse(token: 'abc', isLoading: true);

@@ -13,11 +13,17 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  // Controllers for username and password text fields
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // Key to validate the login form
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  // Controls whether the password field is obscured or visible
   bool obscureText = true;
 
+  // Toggle password visibility
   void _handleObscureText() {
     setState(() {
       obscureText = !obscureText;
@@ -26,9 +32,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Watch authentication loading state to show loading indicator
     final bool authenticationStatus =
         ref.watch(authenticationProvider).isLoading;
 
+    // Listen for authentication errors to show error notification
     ref.listen<AuthenticationApiResponse>(authenticationProvider, (
       previous,
       current,
@@ -40,6 +48,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       }
     });
 
+    // Listen to whether a cart or user exists, to automatically pop login screen
     ref.listen<bool>(hasCartOrUser, (previous, current) {
       if (current) {
         WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -53,6 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Form(
       key: _formKey,
       child: GestureDetector(
+        // Dismiss keyboard when tapping outside of inputs
         onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
         child: LoginTemplate(
           path: 'assets/images/Logotipo.png',
@@ -62,12 +72,15 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
           usernameController: _usernameController,
           validatorUsername: formValidator,
           validatorPassword: formValidator,
+          // Go back when back button pressed
           backonPressed: () {
             context.pop();
           },
+          // Navigate to cart screen
           cartonPressed: () {
             context.go('/cart');
           },
+          // On login button pressed, validate form and call authentication method
           onPressed: () {
             if (_formKey.currentState!.validate()) {
               Future(() async {
@@ -80,6 +93,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               });
             }
           },
+          // Toggle password visibility icon pressed
           iconOnPressed: _handleObscureText,
         ),
       ),
@@ -88,6 +102,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   @override
   void dispose() {
+    // Dispose controllers when widget removed to free resources
     _usernameController.dispose();
     _passwordController.dispose();
     super.dispose();

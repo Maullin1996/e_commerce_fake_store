@@ -9,10 +9,10 @@ import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ProductsApiResponse {
-  final bool isLoading;
-  final String errorMessage;
-  final List<Product> allProducts;
-  final String selectedCategory;
+  final bool isLoading; // Indicates whether the products are being loaded
+  final String errorMessage; // Stores error message if something goes wrong
+  final List<Product> allProducts; // The complete list of products retrieved
+  final String selectedCategory; // The category selected for filtering products
 
   ProductsApiResponse({
     this.isLoading = false,
@@ -21,6 +21,7 @@ class ProductsApiResponse {
     this.selectedCategory = 'All',
   });
 
+  // Allows partial updates to the current state
   ProductsApiResponse copyWith({
     bool? isLoading,
     String? errorMessage,
@@ -35,6 +36,7 @@ class ProductsApiResponse {
     );
   }
 
+  // Returns the list of products filtered by the selected category
   List<Product> get filteredProducts {
     switch (selectedCategory) {
       case 'All':
@@ -50,12 +52,14 @@ class ProductsApiResponse {
           allProducts,
         );
       default:
+        // For any other category, return products that match it
         return allProducts
             .where((product) => product.category == selectedCategory)
             .toList();
     }
   }
 
+  // Filters featured products by ID
   List<Product> _getSpecialFeaturedProducts(
     List<Product> products,
     List<int> productIds,
@@ -65,6 +69,7 @@ class ProductsApiResponse {
         .toList();
   }
 
+  // Filters products that are on sale based on predefined IDs
   List<Product> _getSpecialSaleItemsProducts(
     Map<int, double> productsId,
     List<Product> products,
@@ -78,14 +83,16 @@ class ProductsApiResponse {
 }
 
 class ProductsNotifier extends StateNotifier<ProductsApiResponse> {
-  final KeyValueStorageService keyValueStorageService;
-  final ApiServices apiServices;
+  final KeyValueStorageService keyValueStorageService; // For local storage
+  final ApiServices apiServices; // API service to fetch products
 
+  // Initializes with default state and attempts to load products
   ProductsNotifier(this.keyValueStorageService, this.apiServices)
     : super(ProductsApiResponse()) {
     _initializeData();
   }
 
+  // Loads products from local storage first; fetches from API if not found
   Future<void> _initializeData() async {
     try {
       final jsonString = await keyValueStorageService.getValue<String>(
@@ -99,12 +106,17 @@ class ProductsNotifier extends StateNotifier<ProductsApiResponse> {
           state = state.copyWith(allProducts: products);
         }
       }
-    } catch (_) {}
+    } catch (_) {
+      // Ignore errors from shared preferences
+    }
+
+    // If still empty, load from the API
     if (state.allProducts.isEmpty) {
       await fetchAllProducts();
     }
   }
 
+  // Calls the API to fetch products and updates the state accordingly
   Future<void> fetchAllProducts() async {
     state = state.copyWith(isLoading: true, errorMessage: '');
 
@@ -112,12 +124,14 @@ class ProductsNotifier extends StateNotifier<ProductsApiResponse> {
       final productResult = await apiServices.fetchProducts();
 
       productResult.fold(
+        // If failure: update error message
         (failure) {
           state = state.copyWith(
             isLoading: false,
             errorMessage: failure.message,
           );
         },
+        // If success: update state with products and store locally
         (products) async {
           final mappedProducts =
               products
@@ -126,6 +140,7 @@ class ProductsNotifier extends StateNotifier<ProductsApiResponse> {
                         ProductMapper.productFakeStoreToProduct(product),
                   )
                   .toList();
+
           state = state.copyWith(
             allProducts: mappedProducts,
             isLoading: false,
@@ -133,35 +148,42 @@ class ProductsNotifier extends StateNotifier<ProductsApiResponse> {
           );
 
           try {
+            // Save the product list to local storage for offline access
             final jsonList =
                 mappedProducts.map((product) => product.toJson()).toList();
             await keyValueStorageService.setKeyValue(
               'products',
               jsonEncode(jsonList),
             );
-          } catch (_) {}
+          } catch (_) {
+            // Ignore local storage save errors
+          }
         },
       );
     } catch (e) {
+      // Unexpected exceptions
       state = state.copyWith(
         isLoading: false,
-        errorMessage: 'Error inespetado: $e',
+        errorMessage: 'Unexpected error: $e',
       );
     }
   }
 
+  // Updates the selected category used to filter products
   void setCategory(String category) {
     state = state.copyWith(selectedCategory: category);
   }
 
+  // Clears any existing error messages in the state
   void clearError() {
     state = state.copyWith(errorMessage: '');
   }
 }
 
+// Provides the ProductsNotifier and its state to the app
 final productsProvider =
     StateNotifierProvider<ProductsNotifier, ProductsApiResponse>((ref) {
-      final keyValueStore = KeyValueStorage();
+      final keyValueStore = KeyValueStorage(); // Dependency for local storage
 
       return ProductsNotifier(keyValueStore, ApiServices());
     });
