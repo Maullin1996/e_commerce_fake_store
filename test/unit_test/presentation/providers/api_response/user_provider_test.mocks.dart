@@ -10,7 +10,7 @@ import 'package:fake_store_api_package/infraestructure/driven-adapter/api/auth_f
     as _i8;
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart'
     as _i5;
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart'
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart'
     as _i4;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;

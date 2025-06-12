@@ -1,0 +1,112 @@
+{
+    "colors":{
+        "primary":"#032F37",
+        "primaryVariant":"#021D22",
+
+        "secondary":"#BA5824",
+        "secondaryVariant":"#8A3E19",
+
+        "background":"#F2EFEE",
+        "surface":"#FFFFFF",
+
+        "error":"#D32F2F",
+        "onError": "#FFFFFF",
+
+        "onPrimary": "#FFFFFF",
+        "onSecondary": "#FFFFFF",
+        "onBackground": "#032F37",
+        "onSurface": "#212121",
+
+        "disabledButton": "#969696",
+        "backgroundText": "#BF032F37",
+        "backgroundTextFormField": "#A8EEEEEE",
+
+        "backgroundFlutterToast": "#E8F5E9",
+        "textFlutterToast": "#4CAF50",
+
+        "backgroundFlutterToastError": "#FFEBEE",
+        "textFlutterToastError": "#F44336"
+    },
+    "spacing": {
+        "xSmall": 8.0,
+        "small": 12.0,
+        "smallMedium": 24.0,
+        "medium": 34.0,
+        "mediumLarge": 44.0,
+        "large": 64.0,
+        "extraLarge": 124.0
+    },
+    "radius": {
+        "small": 8.0,
+        "medium": 12.0,
+        "large": 16.0,
+        "extraLarge": 24.0
+    },
+    "typography":{
+        "fonts":{
+            "body":"Roboto",
+            "heading":"OpenSans",
+            "casual":"Karla"
+        },
+        "sizes":{
+            "body": 18.0,
+            "h5": 12.0,
+            "h4": 16.0,
+            "h3": 22.0,
+            "h2": 28.0,
+            "h1": 36.0
+        }
+    },
+    "copys":{
+        "appBartText":{
+        "appbartTexthome" : "Home"
+        },
+        "loginText":{
+            "title":"Login",
+            "subtitle":"Sign in to continue",
+            "labelUsername":"Username",
+            "labelPassword":"Password",
+            "titleButtonLogin":"Enter"
+        },
+        "productContainerText":{
+            "productTextButton":"Add to Cart"
+        },
+        "errorMessage":{
+            "firstMessage":"Error to get the products",
+            "secondMessage":"Pull to update or refresh"
+        },
+        "companyInformation":{
+            "address":"CRA 88A # 55W - 44 Sur Medellin",
+            "email":"allstorehouse@correo.com",
+            "instagram":"all.storehouse",
+            "whatsapp":"(+57) 3354425145"
+        },
+        "searchAnchorWidget":{
+            "hintText":"Search Product"
+        },
+        "infoUserHolder":{
+            "textUserinfo":"Personal Data",
+            "textUserlocation":"location information"
+        },
+        "customDialogs":{
+            "emptycart":"Add Products",
+            "totalToPay":"Go To Pay : ",
+            "authenticatedUser":{
+                "alertText":"Successful Purchase",
+                "titleTextButton":"Continue Shopping"
+            },
+            "unAuthenticatedUser":{
+                "alertText":"Unauthenticated user",
+                "titleTextButton":"Login"
+            }
+        },
+        "customFloatingNotifications":{
+            "notAdd":"Product Add",
+            "alreadyAdd":"Product already add"
+        },
+        "images":{
+            "companyLogo":"assets/images/Logotipo.png",
+            "loadError":"assets/images/error.png"
+        }
+    }
+}

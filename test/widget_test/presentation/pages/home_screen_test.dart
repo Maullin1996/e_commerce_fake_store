@@ -38,7 +38,12 @@ void main() {
   late MockKeyValueStorageService mockKeyValueStorage;
 
   group('HomeScreen user login', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
 
@@ -246,7 +251,9 @@ void main() {
     });
   });
   group('Api  Response error message', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
 
@@ -302,7 +309,9 @@ void main() {
   });
 
   group('Api  Response error message', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
 

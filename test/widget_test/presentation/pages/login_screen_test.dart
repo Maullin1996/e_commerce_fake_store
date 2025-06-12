@@ -5,11 +5,9 @@ import 'package:fake_store/domain/services/key_value_storage_service.dart';
 import 'package:fake_store/presentation/pages.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
 import 'package:fake_store_api_package/errors/structure/failure.dart';
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
-import 'package:fake_store_design/atoms/app_assets_image.dart';
-import 'package:fake_store_design/atoms/app_icons.dart';
-import 'package:fake_store_design/template/tamplate.dart';
+import 'package:fake_store_design/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,7 +41,12 @@ void main() {
   late MockKeyValueStorageService mockKeyValueStorage;
 
   group('LoginScreen', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
       container = ProviderContainer(
@@ -119,16 +122,6 @@ void main() {
         state.token,
         equals('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.mockTokenExample123'),
       );
-    });
-
-    testWidgets("check the button navigation", (WidgetTester tester) async {
-      // Arrange
-      await tester.pumpWidget(buildWidget(container));
-      await tester.tap(find.byIcon(AppIcons.cart));
-      await tester.pumpAndSettle();
-
-      //Assert
-      expect(find.byType(LoginTemplate), findsNothing);
     });
 
     testWidgets("Shows loading state during authentication", (

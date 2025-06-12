@@ -39,4 +39,6 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/design/copys.json
+    - assets/locale/en/semantics_json.json
     - assets/images/

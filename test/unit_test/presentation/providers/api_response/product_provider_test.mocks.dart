@@ -9,7 +9,7 @@ import 'package:dartz/dartz.dart' as _i2;
 import 'package:fake_store/domain/services/key_value_storage_service.dart'
     as _i7;
 import 'package:fake_store_api_package/errors/index_errors.dart' as _i5;
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart'
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart'
     as _i6;
 import 'package:fake_store_api_package/methods/api_services.dart' as _i3;
 import 'package:mockito/mockito.dart' as _i1;

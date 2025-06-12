@@ -1,0 +1,52 @@
+{
+  "productInformationScreen": [
+    { "label": "Product Name", "semantics": "", "semanticOrdinal": 1.0 },
+    { "label": "Favorite button, double tap to add to the favorite list", "semantics": "", "semanticOrdinal": 2.0 },
+    { "label": "Product Image", "semantics": "", "semanticOrdinal": 3.0 },
+    { "label": "Product description", "semantics": "", "semanticOrdinal": 4.0 },
+    { "label": "Actual price", "semantics": "The product is on sale, normal price", "semanticOrdinal": 5.0 },
+    { "label": "Button to add product to the cart", "semantics": "", "semanticOrdinal": 6.0 }
+  ],
+  "customButtons": [
+    { "label": "Return to the previous screen", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Go to the cart screen", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Go to the user information screen", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Go to the sign-in screen", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Log out", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Username", "semantics": "", "semanticOrdinal": 0.0 }
+  ],
+  "inputTextSemantics": [
+    { "label": "Box to enter the username to log in. Double tap to edit text", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Box to enter the password to log in. Double tap to edit text", "semantics": "", "semanticOrdinal": 0.0 },
+    { "label": "Icon to show the password", "semantics": "", "semanticOrdinal": 0.0 }
+  ],
+  "cartTemplateSemantics": [
+    { "label": "Product Image", "semantics": "Double tap to navigate to the product information screen", "semanticOrdinal": 1.0 },
+    { "label": "Product name", "semantics": "", "semanticOrdinal": 2.0 },
+    { "label": "Amount of products", "semantics": "", "semanticOrdinal": 3.0 },
+    { "label": "Product description", "semantics": "", "semanticOrdinal": 4.0 },
+    { "label": "", "semantics": "", "semanticOrdinal": 5.0 },
+    { "label": "Increase the amount of the product", "semantics": "", "semanticOrdinal": 6.0 },
+    { "label": "Decrease the amount of the product", "semantics": "", "semanticOrdinal": 7.0 }
+  ],
+  "customDialogsMessage": [
+    { "label": "Press the continue button to complete the purchase", "semantics": "Go to the home screen", "semanticOrdinal": 0.0 },
+    { "label": "You need to be authenticated to continue with the shopping", "semantics": "Go to the sign-in screen", "semanticOrdinal": 0.0 }
+  ],
+  "productHomeContainer": [
+    { "label": "Product Image", "semantics": "Double tap to navigate to the product information screen", "semanticOrdinal": 1.0 },
+    { "label": "Product Name", "semantics": "", "semanticOrdinal": 2.0 },
+    { "label": "Favorite button, double tap to add to the favorite list", "semantics": "", "semanticOrdinal": 3.0 },
+    { "label": "Product category", "semantics": "", "semanticOrdinal": 4.0 },
+    { "label": "", "semantics": "", "semanticOrdinal": 5.0 },
+    { "label": "Button to add product to the cart", "semantics": "", "semanticOrdinal": 6.0 }
+  ],
+  "homeTemplate": [
+    { "label": "Box to search products by their name", "semantics": "", "semanticOrdinal": 1.0 },
+    { "label": "Scrollable bar that separates the products by their category", "semantics": "", "semanticOrdinal": 2.0 },
+    { "label": "Please wait a moment, the products are loading", "semantics": "", "semanticOrdinal": 3.0 },
+    { "label": "", "semantics": "", "semanticOrdinal": 4.0 },
+    { "label": "Product", "semantics": "", "semanticOrdinal": 5.0 },
+    { "label": "Company information", "semantics": "", "semanticOrdinal": 6.0 }
+  ]
+}

@@ -6,7 +6,8 @@ import 'package:fake_store_api_package/errors/handler/api_error_handler.dart';
 import 'package:fake_store_api_package/errors/structure/api_failure.dart';
 import 'package:fake_store_api_package/errors/structure/fetch_fake_store_exception.dart';
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart';
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart';
+
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

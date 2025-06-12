@@ -5,7 +5,7 @@ import 'package:fake_store/presentation/providers/providers.dart';
 import 'package:fake_store/presentation/providers/shared/products_category_provider.dart';
 import 'package:fake_store_api_package/errors/index_errors.dart';
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/fake_store_api.dart';
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';

@@ -1,7 +1,6 @@
 import 'package:fake_store/presentation/pages/product_screen.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
-import 'package:fake_store_design/atoms/app_icons.dart';
-import 'package:fake_store_design/template/tamplate.dart';
+import 'package:fake_store_design/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -34,7 +33,12 @@ void main() {
   late ProviderContainer container;
 
   group('ProductScreen', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       container = ProviderContainer(
         overrides: [
           myFavoriteListProvider.overrideWith(

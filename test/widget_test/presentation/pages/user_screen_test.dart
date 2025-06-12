@@ -2,8 +2,7 @@ import 'package:fake_store/domain/services/key_value_storage_service.dart';
 import 'package:fake_store/presentation/pages/user_screen.dart';
 import 'package:fake_store/presentation/providers/providers.dart';
 import 'package:fake_store_api_package/methods/api_services.dart';
-import 'package:fake_store_design/atoms/tokens.dart';
-import 'package:fake_store_design/template/user_template.dart';
+import 'package:fake_store_design/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -43,7 +42,12 @@ void main() {
   group('UserScreen', () {
     apiServices = MockApiServices();
     mockKeyValueStorageService = MockKeyValueStorageService();
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       container = ProviderContainer(
         overrides: [
           userInfoProvider.overrideWith(
@@ -144,7 +148,12 @@ void main() {
   group('user == null and loading = True', () {
     apiServices = MockApiServices();
     mockKeyValueStorageService = MockKeyValueStorageService();
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       container = ProviderContainer(
         overrides: [
           userInfoProvider.overrideWith(

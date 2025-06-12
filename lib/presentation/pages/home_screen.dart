@@ -79,10 +79,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       child: HomeTemplate(
         // UI details like assets and contact info
         assetsImage: 'assets/images/error.png',
-        address: 'CRA 88A # 55W - 44 Sur Medellin',
-        email: 'allstorehouse@correo.com',
-        instagram: 'all.storehouse',
-        whatsapp: '(+57) 3354425145',
+        // address: 'CRA 88A # 55W - 44 Sur Medellin',
+        // email: 'allstorehouse@correo.com',
+        // instagram: 'all.storehouse',
+        // whatsapp: '(+57) 3354425145',
 
         // Categories to display for filtering
         categories: categories,

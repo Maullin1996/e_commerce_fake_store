@@ -10,7 +10,7 @@ import 'package:fake_store/domain/services/key_value_storage_service.dart'
 import 'package:fake_store_api_package/errors/index_errors.dart' as _i3;
 import 'package:fake_store_api_package/infraestructure/driven-adapter/api/auth_fake_store_api.dart'
     as _i5;
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart'
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart'
     as _i4;
 import 'package:http/http.dart' as _i2;
 import 'package:mockito/mockito.dart' as _i1;

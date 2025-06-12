@@ -1,4 +1,4 @@
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart';
 
 abstract class FakeMock {
   static final List<CartsFakeStore> cartMock = [

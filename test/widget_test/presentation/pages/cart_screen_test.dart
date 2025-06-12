@@ -35,7 +35,12 @@ void main() {
   late MockKeyValueStorageService mockKeyValueStorage;
 
   group('User Login', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
       container = ProviderContainer(
@@ -193,7 +198,12 @@ void main() {
     });
   });
   group('User Logout', () {
-    setUp(() {
+    setUp(() async {
+      WidgetsFlutterBinding.ensureInitialized();
+      await AtomicDesignConfig.initializeFromAsset('assets/design/copys.json');
+      await SemanticsConfig.initializeFromAsset(
+        'assets/locale/en/semantics_json.json',
+      );
       mockApiServices = MockApiServices();
       mockKeyValueStorage = MockKeyValueStorageService();
       container = ProviderContainer(

@@ -1,5 +1,5 @@
 import 'package:fake_store/domain/models/user.dart';
-import 'package:fake_store_api_package/infraestructure/helppers/mappers.dart';
+import 'package:fake_store_api_package/infraestructure/helpers/mappers.dart';
 
 /// A mapper class for converting between [UsersFakeStore] and [User] entities.
 class UsersMapper {
